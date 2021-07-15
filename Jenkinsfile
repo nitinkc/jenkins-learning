@@ -13,7 +13,7 @@ pipeline {
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [],
                     submoduleCfg: [],
-                    userRemoteConfigs: [[credentialsId: 'git', url: 'git@github.com:nitinkc/devops-learning.git']]]
+                    userRemoteConfigs: [[credentialsId: 'git', url: 'https://github.com/nitinkc/devops-learning.git']]]
                 }
             }
     }
