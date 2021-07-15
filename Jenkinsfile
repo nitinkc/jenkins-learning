@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    buildPlugin()
 
     stages {
             stage('Checkout') {
