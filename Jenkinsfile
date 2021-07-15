@@ -20,7 +20,7 @@ pipeline {
             steps{
                 script{
                     try{
-                        sh 'gradle clean buils'
+                        sh 'gradle clean build'
                     } finally {
 
                     }
