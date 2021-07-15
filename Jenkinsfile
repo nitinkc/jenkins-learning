@@ -42,6 +42,7 @@ pipeline {
 
         stage('Publish Artifact to Jfrog Artifactory') {
             steps {
+                sh 'echo "Publishing to JFrog Artifactory"'
                 //sh './gradlew publish --no-daemon'
                 sh './gradlew artifactoryPublish --no-daemon'
 
