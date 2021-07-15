@@ -4,8 +4,7 @@ pipeline {
     stages {
             stage('Checkout') {
                 steps { //Checking out the repo
-                    checkout
-                    changelog: true,
+                    checkout changelog: true,
                     poll: true,
                     scm: [$class: 'GitSCM',
                     branches: [[name: '*/master']],
