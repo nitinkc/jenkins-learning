@@ -1,3 +1,17 @@
+pipeline {
+    agent {
+       label 'agentId' //The id of the slave/agent where the build should be executed, if it doesn't matter use "agent any" instead.
+    }
+    stages {
+            stage('Checkout') {
+                steps { //Checking out the repo
+                    checkout changelog: true, poll: true, scm: [$class: 'GitSCM', branches: [[name: '*/master']], browser: [$class: 'BitbucketWeb', repoUrl: 'https://web.com/blah'], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'git', url: 'git@github.com:nitinkc/devops-learning.git']]]
+                }
+            }
+    }
+
+}
+/*
 node {
    def mvnHome
    stage('Prepare') {
@@ -12,8 +26,10 @@ node {
       }
    }
    stage('Unit Test') {
-      junit '**/target/surefire-reports/TEST-*.xml'
-      archive 'target/*.jar'
+      junit '**//*
+target/surefire-reports/TEST-*.xml'
+      archive 'target */
+/*.jar'
    }
    stage('Integration Test') {
      if (isUnix()) {
@@ -30,9 +46,10 @@ node {
       }
    }
    stage('Deploy') {
-       sh 'curl -u jenkins:jenkins -T target/**.jar "http://localhost:8080/manager/text/deploy?path=/devops&update=true"'
+       sh 'curl -u jenkins:jenkins -T target */
+/**.jar "http://localhost:8080/manager/text/deploy?path=/devops&update=true"'
    }
    stage("Smoke Test"){
        sh "curl --retry-delay 10 --retry 5 http://localhost:8080/devops"
    }
-}
+} */
