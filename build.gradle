@@ -1,13 +1,56 @@
+buildscript {
+	ext {
+	}
+	repositories {
+		jcenter()
+		maven {
+			//url "http://localhost:8082/artifactory/libs-release-local/"
+			//allowInsecureProtocol = true
+			url "https://nitin.jfrog.io/artifactory/libs-release-local/"
+		}
+		maven {
+			//url "http://localhost:8082/artifactory/libs-snapshot-local/"
+			//allowInsecureProtocol = true
+			url "https://nitin.jfrog.io/artifactory/libs-snapshot-local/"
+		}
+	}
+
+	dependencies {
+		//Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
+		classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version "${springBootVersion}"
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id("io.swagger.core.v3.swagger-gradle-plugin") version "2.1.10"
+	id 'org.sonarqube' version "${versionSonarqube}"
+	id 'com.jfrog.artifactory' version "${versionJfrogArtifactory}"
 }
-
+apply plugin: 'maven-publish'
 group = 'com.learn'
 version = '0.0.1-SNAPSHOT'
+//version = "14.0.0"
+
 sourceCompatibility = '11'
+
+allprojects {
+	apply plugin: "com.jfrog.artifactory"
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId = project.group
+			artifactId = 'devops-learning'
+			version = project.version
+
+			from components.java
+		}
+	}
+}
 
 configurations {
 	compileOnly {
@@ -35,4 +78,54 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+bootJar {
+	baseName = 'cwow-orders-query-spanner'
+	version = project.version
+}
+
+artifactory {
+	contextUrl = "${artifactory_contextUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
+
+	publish {
+		repository {
+			repoKey = 'libs-release-local'
+			username = "${artifactory_user}"
+			password = "${artifactory_password}"
+			maven = true
+		}
+		defaults {
+			publications('mavenJava')
+			publishConfigs('archives', 'published')
+			properties = project.ext.artifactoryProperties
+			publishBuildInfo = true
+			publishArtifacts = true
+			publishPom = true
+			publishIvy = false
+		}
+	}
+
+	resolve {
+		repository {
+			repoKey = 'libs-snapshot-local'
+			username = "${artifactory_user}"
+			password = "${artifactory_password}"
+			maven = true
+		}
+	}
+}
+
+project.ext.artifactoryProperties = ['snapshotless': 'true', 'git.revision': System.env.GIT_COMMIT]
+
+springBoot {
+	buildInfo {
+		properties {
+			additional = [
+					"git.commitId"        : "$System.env.GIT_COMMIT",
+					"git.branch"          : "$System.env.BRANCH_NAME",
+					"jenkins.build-number": "$System.env.BUILD_NUMBER"
+			]
+		}
+	}
 }
