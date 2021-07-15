@@ -42,7 +42,9 @@ pipeline {
 
         stage('Publish Artifact to Jfrog Artifactory') {
             steps {
-                sh './gradlew publish --no-daemon'
+                //sh './gradlew publish --no-daemon'
+                sh './gradlew artifactoryPublish --no-daemon'
+
             }
         }
     }
