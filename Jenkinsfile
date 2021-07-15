@@ -1,15 +1,13 @@
 pipeline {
     agent any
-    buildPlugin()
 
     stages {
             stage('Checkout') {
                 steps { //Checking out the repo
                     checkout changelog: true,
                     poll: true,
-                    scm: [$class: 'GitSCM',
-                    branches: [[name: '*/develop']],
-                    browser: [$class: 'Github', repoUrl: 'https://github.com/nitinkc'],
+                    scm: [$class: 'GitSCM', branches: [[name: '*/develop']],
+                    //browser: [$class: 'Github', repoUrl: 'https://github.com/nitinkc'],
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [[$class: 'CleanBeforeCheckout'],[$class: 'RelativeTargetDirectory', relativeTargetDir: 'targetDir']],
                     submoduleCfg: [],
