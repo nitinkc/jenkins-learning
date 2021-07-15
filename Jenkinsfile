@@ -7,10 +7,10 @@ pipeline {
                     checkout changelog: true,
                     poll: true,
                     scm: [$class: 'GitSCM',
-                    branches: [[name: '*/master']],
+                    branches: [[name: '*/develop']],
                     browser: [$class: 'Github', repoUrl: 'https://github.com/nitinkc'],
                     doGenerateSubmoduleConfigurations: false,
-                    extensions: [],
+                    extensions: [[$class: 'CleanBeforeCheckout'],[$class: 'RelativeTargetDirectory', relativeTargetDir: 'targetDir']],
                     submoduleCfg: [],
                     userRemoteConfigs: [[credentialsId: 'git', url: 'https://github.com/nitinkc/devops-learning.git']]]
                 }
