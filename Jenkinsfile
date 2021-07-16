@@ -1,4 +1,8 @@
 #!groovy
+environment {
+    registry = "docker_hub_account/repository_name"
+    registryCredential = 'dockerhub'
+}
 pipeline {
     agent any
 
