@@ -10,7 +10,7 @@ public class TestController {
     @GetMapping("/")
     public String health(){
         String url = "http://localhost:9000/profile";
-        return "Healthy and running" +"\t"+ url;
+        return "Healthy and running" +"\n"+ url;
     }
 
 
