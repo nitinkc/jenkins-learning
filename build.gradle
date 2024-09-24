@@ -47,7 +47,7 @@ publishing {
 	publications {
 		maven(MavenPublication) {
 			groupId = project.group
-			artifactId = 'devops-learning'
+			artifactId = 'jenkins-learning'
 			version = project.version
 
 			from components.java
